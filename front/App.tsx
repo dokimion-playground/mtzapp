@@ -1,20 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, Button, SafeAreaView, TextInput} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import RootNavigator from './src/navigations/root/RootNavigator';
 
 function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>text</Text>
-      <Button title="버튼" />
-      <TextInput />
-    </SafeAreaView>
+    <NavigationContainer>
+      <RootNavigator />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'red',
-  },
-});
 
 export default App;
