@@ -1,19 +1,40 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  PressableProps,
+  Dimensions,
+} from 'react-native';
+import {colors} from '../constants';
 
-interface CustomButtonProps {
+interface CustomButtonProps extends PressableProps {
   label: string;
   variant?: 'filled' | 'outlined';
   size?: 'large' | 'medium';
+  inValid?: boolean;
 }
+
+const deviceHeight = Dimensions.get('screen').height;
 
 function CustomButton({
   label,
   variant = 'filled',
   size = 'large',
+  inValid = false,
+  ...props
 }: CustomButtonProps) {
   return (
-    <Pressable style={(styles.container, styles[variant], styles[size])}>
+    <Pressable
+      disabled={inValid}
+      style={({pressed}) => [
+        styles.container,
+        styles[variant],
+        styles[size],
+        pressed ? styles[`${variant}Pressed`] : styles[variant],
+        inValid && styles.inValid,
+      ]}
+      {...props}>
       <Text style={[styles.text, styles[`${variant}Text`]]}>{label}</Text>
     </Pressable>
   );
@@ -24,17 +45,26 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     justifyContent: 'center',
   },
-  filled: {backgroundColor: '#C63B64'},
-  outlined: {borderColor: '#C63B64', borderWidth: 1},
+  inValid: {
+    opacity: 0.5,
+  },
+  filled: {backgroundColor: colors.PINK_700},
+  outlined: {borderColor: colors.PINK_700, borderWidth: 1},
   large: {
     width: '100%',
-    paddingVertical: 15,
+    paddingVertical: deviceHeight > 700 ? 15 : 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  filledPressed: {backgroundColor: colors.PINK_500},
+  outlinedPressed: {
+    backgroundColor: colors.PINK_700,
+    borderWidth: 1,
+    opacity: 0.5,
+  },
   medium: {
     width: '50%',
-    paddingVertical: 12,
+    paddingVertical: deviceHeight > 700 ? 12 : 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -46,7 +76,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   outlinedText: {
-    color: '#C63B64',
+    color: colors.PINK_700,
   },
 });
 
